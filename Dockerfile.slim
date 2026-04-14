@@ -1,0 +1,24 @@
+# -------- Base Image --------
+FROM mcr.microsoft.com/azure-cli:2.61.0
+
+ENV TARGETARCH="linux-x64"
+
+# Use apk instead of apt-get
+RUN apk add --no-cache \
+    openjdk17-jre \
+    git \
+    jq \
+    curl \
+    ca-certificates
+
+WORKDIR /azp/
+
+COPY ./start.sh ./
+RUN chmod +x ./start.sh
+
+RUN adduser -D agent && \
+    chown -R agent:agent /azp /home/agent
+
+USER agent
+
+ENTRYPOINT ["./start.sh"]

@@ -1,5 +1,5 @@
 FROM ubuntu:24.04
-ENV TARGETARCH="linux-x64"
+ENV TARGETARCH="linux-arm64"
 # Also can be "linux-arm", "linux-arm64".
 
 RUN apt update && \
