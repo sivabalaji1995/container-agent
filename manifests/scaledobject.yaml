@@ -1,0 +1,20 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: aks-agent-pool-scaledobject
+spec:
+  scaleTargetRef: 
+    name: aks-agent-pool
+  minReplicaCount: 1
+  maxReplicaCount: 5
+  pollingInterval: 15
+  cooldownPeriod: 30
+  triggers:
+  - type: azure-pipelines
+    metadata:
+      organizationURL: https://dev.azure.com/sivabalaji280
+      poolName: AKS-AGENT-POOL
+      targetPendingBuilds: "1"
+    authenticationRef:
+      name: azp-trigger-auth
+    

@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aks-agent-pool
+  labels:
+    app: aks-agent-pool
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aks-agent-pool
+  template:
+    metadata:
+      labels:
+        app: aks-agent-pool
+    spec:
+      imagePullSecrets:
+      - name: ghcr-secret
+      containers:
+      - name: aks-agent-pool
+        image: ghcr.io/sivabalaji1995/azp-java-agent:latest
+        imagePullPolicy: Always
+        env:
+        - name: AZP_URL
+          valueFrom:
+            secretKeyRef:
+              name: azp-secret
+              key: AZP_URL
+        - name: AZP_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: azp-secret
+              key: AZP_TOKEN
+        - name: AZP_POOL
+          valueFrom:
+            secretKeyRef:
+              name: azp-secret
+              key: AZP_POOL
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+        
+
+    
+          
